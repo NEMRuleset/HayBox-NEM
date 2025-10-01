@@ -1,0 +1,27 @@
+#ifndef _CORE_INPUTMODE_HPP
+#define _CORE_INPUTMODE_HPP
+
+#include "socd.hpp"
+#include "state.hpp"
+
+#include <config.pb.h>
+
+class InputMode {
+  public:
+    InputMode();
+    GameModeConfig *GetConfig();
+    void SetConfig(GameModeConfig &config);
+    virtual void UpdateOutputs(const InputState &inputs, OutputState &outputs) = 0;
+    virtual bool isMelee() = 0;
+
+  protected:
+    GameModeConfig *_config = nullptr;
+
+    virtual void HandleSocd(InputState &inputs);
+    virtual void HandleRemap(const InputState &original_inputs, InputState &remapped_inputs);
+
+  private:
+    socd::SocdState _socd_states[10] = {};
+};
+
+#endif
